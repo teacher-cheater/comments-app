@@ -65,7 +65,63 @@
 
   <script>
     "use strict";
-    // Код писать здесь
-    console.log("It works!");
+
+    const nameInput = document.querySelector(".add-form-name");
+    const commentInput = document.querySelector(".add-form-text");
+    const addButton = document.querySelector(".add-form-button");
+    const commentsList = document.querySelector(".comments");
+
+    const formatDate = () => {
+      const d = new Date();
+      const p = n => (n + "").padStart(2, "0");
+      return `${p(d.getDate())}.${p(d.getMonth() + 1)}.${d
+        .getFullYear()
+        .toString()
+        .slice(-2)} ${p(d.getHours())}:${p(d.getMinutes())}`;
+    };
+
+    const createCommentElement = (authorName, commentText) => {
+      let commentItem = document.createElement("li");
+
+      commentItem.innerHTML = `
+        <li class="comment">
+          <div class="comment-header">
+            <div>${authorName}</div>
+            <div>${formatDate()}</div>
+          </div>
+          <div class="comment-body">
+            <div class="comment-text">
+              ${commentText}
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class="likes-counter">75</span>
+              <button class="like-button -active-like"></button>
+            </div>
+          </div>
+        </li>
+      `;
+      return commentItem;
+    };
+
+    const addComment = () => {
+      const username = nameInput.value.trim();
+      const commentText = commentInput.value.trim();
+
+      if (!username || !commentText) {
+        alert("Заполните все поля");
+        return;
+      }
+
+      const newComment = createCommentElement(username, commentText);
+      commentsList.appendChild(newComment);
+
+      nameInput.value = "";
+      commentInput.value = "";
+    };
+
+    addButton.addEventListener("click", addComment);
+
   </script>
 </html>
